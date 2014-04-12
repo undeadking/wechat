@@ -50,7 +50,7 @@ class WxResponse(object):
 
     def __init__(self, request):
         self.CreateTime = long(time.time())
-        self.FuncFlag = 0
+        # self.FuncFlag = 0 //FuncFlag参数已经取消
         self.ToUserName = request.FromUserName
         self.FromUserName = request.ToUserName
 
@@ -68,7 +68,7 @@ class WxResponse(object):
                 xml.appendChild(content)
         else:
             xml.appendChild(contents)
-        xml.appendChild(kv2element('FuncFlag', self.FuncFlag, doc))
+        # xml.appendChild(kv2element('FuncFlag', self.FuncFlag, doc)) //FuncFlag参数已经取消
         return doc.toxml()
 
 
