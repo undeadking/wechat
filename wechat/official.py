@@ -206,6 +206,9 @@ class WxApplication(object):
     def on_unsubscribe(self, unsub):
         return WxTextResponse(self.UNSUPPORT_TXT, unsub)
 
+    def on_scan(self,scan):
+        return WxTextResponse(self.UNSUPPORT_TXT, scan)
+
     def on_click(self, click):
         return WxTextResponse(self.UNSUPPORT_TXT, click)
 
