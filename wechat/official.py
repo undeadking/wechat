@@ -179,14 +179,21 @@ class WxApplication(object):
         return WxTextResponse(self.UNSUPPORT_TXT, loc)
 
     def on_event(self, event):
-        if event.Event == 'subscribe':
+        event_key = event.Event.lower() #统一转为小写,减低出问题机率
+        if event_key == 'subscribe':
             return self.on_subscribe(event)
-        elif event.Event == 'unsubscribe':
+        elif event_key == 'unsubscribe':
             return self.on_unsubscribe(event)
-        elif event.Event == 'VIEW':
+        elif event_key == 'scan':
+            return self.on_scan(event)
+        elif event_key == 'location':
+            return self.on_event_location(event)
+        elif event_key == 'click':
+            return self.on_click(event)            
+        elif event_key == 'view':
             return self.on_view(event)
         else:
-            return self.on_click(event)
+            return self.on_unknown(event)
 
     def on_subscribe(self, sub):
         return WxTextResponse(self.WELCOME_TXT, sub)
@@ -194,11 +201,19 @@ class WxApplication(object):
     def on_unsubscribe(self, unsub):
         return WxTextResponse(self.UNSUPPORT_TXT, unsub)
 
+    def on_scan(self,scan):
+        return WxTextResponse(self.UNSUPPORT_TXT, scan)
+
+    def on_event_location(self, loc):
+        return WxTextResponse(self.UNSUPPORT_TXT, loc)
+
     def on_click(self, click):
         return WxTextResponse(self.UNSUPPORT_TXT, click)
 
     def on_view(self, view):
-        print view.EventKey
+        return None #该事件无法发送被动消息
+
+    def on_unknown(self, view):
         return None
 
     def handler_map(self):
