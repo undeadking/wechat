@@ -162,7 +162,7 @@ class WxApplication(object):
         rsp = func(req)
         self.post_process(rsp)
         if isinstance(rsp,WxResponse):
-        return rsp.as_xml()
+            return rsp.as_xml()
         else:
             return 'no response'
 
@@ -183,6 +183,8 @@ class WxApplication(object):
             return self.on_subscribe(event)
         elif event.Event == 'unsubscribe':
             return self.on_unsubscribe(event)
+        elif event.Event == 'VIEW':
+            return self.on_view(event)
         else:
             return self.on_click(event)
 
@@ -194,6 +196,10 @@ class WxApplication(object):
 
     def on_click(self, click):
         return WxTextResponse(self.UNSUPPORT_TXT, click)
+
+    def on_view(self, view):
+        print view.EventKey
+        return None
 
     def handler_map(self):
         return {
