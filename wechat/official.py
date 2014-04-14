@@ -162,7 +162,7 @@ class WxApplication(object):
         rsp = func(req)
         self.post_process(rsp)
         if isinstance(rsp,WxResponse):
-        return rsp.as_xml()
+            return rsp.as_xml()
         else:
             return 'no response'
 
