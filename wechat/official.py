@@ -177,6 +177,12 @@ class WxApplication(object):
     def on_location(self, loc):
         return WxTextResponse(self.UNSUPPORT_TXT, loc)
 
+    def on_voice(self, voice):
+        return WxTextResponse(self.UNSUPPORT_TXT, voice)
+
+    def on_video(self, video):
+        return WxTextResponse(self.UNSUPPORT_TXT, video)
+
     def on_event(self, event):
         event_key = event.Event.lower() #统一转为小写,减低出问题机率
         if event_key == 'subscribe':
@@ -221,6 +227,8 @@ class WxApplication(object):
             'link': self.on_link,
             'image': self.on_image,
             'location': self.on_location,
+            'voice': self.on_voice,
+            'video': self.on_video,
             'event': self.on_event,
         }
 
