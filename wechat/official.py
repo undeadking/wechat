@@ -203,7 +203,7 @@ class WxApplication(object):
         return WxTextResponse(self.WELCOME_TXT, sub)
 
     def on_unsubscribe(self, unsub):
-        return WxTextResponse(self.UNSUPPORT_TXT, unsub)
+        return None #该事件无法发送被动消息
 
     def on_scan(self,scan):
         return WxTextResponse(self.UNSUPPORT_TXT, scan)
@@ -212,7 +212,7 @@ class WxApplication(object):
         return WxTextResponse(self.UNSUPPORT_TXT, click)
 
     def on_location_update(self, location):
-        return WxTextResponse(self.UNSUPPORT_TXT, location)
+        return None #默认不回复地理位置事件,否则很容易刷屏
 
     def on_view(self, view):
         return WxTextResponse(self.UNSUPPORT_TXT, view)
