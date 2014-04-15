@@ -125,6 +125,7 @@ class WxNewsResponse(WxResponse):
 class WxApplication(object):
 
     UNSUPPORT_TXT = u'暂不支持此类型消息'
+    UNKNOWN_TXT = u'收到了未知类型消息'
     WELCOME_TXT = u'你好！感谢您的关注！'
     SECRET_TOKEN = None
 
@@ -155,9 +156,7 @@ class WxApplication(object):
 
         req = WxRequest(xml)
         self.wxreq = req
-        func = self.handler_map().get(req.MsgType, None)
-        if not func:
-            return WxTextResponse(self.UNSUPPORT_TXT, req)
+        func = self.handler_map().get(req.MsgType, self.on_unknown)
         self.pre_process()
         rsp = func(req)
         self.post_process(rsp)
@@ -212,14 +211,15 @@ class WxApplication(object):
     def on_click(self, click):
         return WxTextResponse(self.UNSUPPORT_TXT, click)
 
-    def on_scan(self, scan):
-        return WxTextResponse(self.UNSUPPORT_TXT, scan)
-
     def on_location_update(self, location):
         return WxTextResponse(self.UNSUPPORT_TXT, location)
 
     def on_view(self, view):
         return WxTextResponse(self.UNSUPPORT_TXT, view)
+
+    def on_unknown(self, unknown):
+        return WxTextResponse(self.UNKNOWN_TXT, unknown)
+
 
     def handler_map(self):
         if getattr(self, 'handlers', None):
