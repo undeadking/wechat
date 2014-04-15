@@ -125,6 +125,7 @@ class WxNewsResponse(WxResponse):
 class WxApplication(object):
 
     UNSUPPORT_TXT = u'暂不支持此类型消息'
+    UNKNOWN_TXT = u'收到了未知类型消息'
     WELCOME_TXT = u'你好！感谢您的关注！'
     SECRET_TOKEN = None
 
@@ -155,9 +156,7 @@ class WxApplication(object):
 
         req = WxRequest(xml)
         self.wxreq = req
-        func = self.handler_map().get(req.MsgType, None)
-        if not func:
-            return WxTextResponse(self.UNSUPPORT_TXT, req)
+        func = self.handler_map().get(req.MsgType, self.on_unknown)
         self.pre_process()
         rsp = func(req)
         self.post_process(rsp)
@@ -192,7 +191,7 @@ class WxApplication(object):
             return self.on_click(event)            
         elif event_key == 'view':
             return self.on_view(event)
-        else:
+        else:        
             return self.on_unknown(event)
 
     def on_subscribe(self, sub):
@@ -213,8 +212,8 @@ class WxApplication(object):
     def on_view(self, view):
         return None #该事件无法发送被动消息
 
-    def on_unknown(self, view):
-        return None
+    def on_unknown(self, unknown):
+        return WxTextResponse(self.UNKNOWN_TXT, unknown)
 
     def handler_map(self):
         return {
