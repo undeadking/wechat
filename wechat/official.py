@@ -69,7 +69,7 @@ class WxResponse(object):
         else:
             xml.appendChild(contents)
         # xml.appendChild(kv2element('FuncFlag', self.FuncFlag, doc)) //FuncFlag参数已经取消
-        return doc.toxml()
+        return doc.documentElement.toxml() #去除<?xml version="1.0"?>
 
 
 WxMusic = collections.namedtuple('WxMusic',
